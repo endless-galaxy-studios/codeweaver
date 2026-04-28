@@ -1,0 +1,8 @@
+raw: 4209666 bytes  stripped: 4209666 bytes  (built with -s -w -trimpath on darwin/arm64, go1.26.2)
+# Platform: darwin/arm64
+# Go version: go1.26.2
+# Build flags: CGO_ENABLED=0 -trimpath -ldflags="-s -w -buildid="
+# Date: 2026-04-27
+# Note: "raw" and "stripped" are the same because -s -w (symbol table strip) is applied
+# at build time, not as a post-build strip. For cross-platform comparison, rebuild on
+# each target platform. Linux/amd64 typically produces smaller binaries than darwin/arm64.

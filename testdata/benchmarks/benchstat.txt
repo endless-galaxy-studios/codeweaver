@@ -1,0 +1,42 @@
+PASS
+ok  	codeweaver/cmd/codeweaver	0.880s
+?   	codeweaver/cmd/schema-gen	[no test files]
+PASS
+ok  	codeweaver/internal/cli	0.334s
+goos: darwin
+goarch: arm64
+pkg: codeweaver/internal/contract
+cpu: Apple M1 Pro
+BenchmarkJSONMarshal-10    	   33789	     37395 ns/op	   32786 B/op	       1 allocs/op
+BenchmarkJSONMarshal-10    	   31681	     36444 ns/op	   32785 B/op	       1 allocs/op
+BenchmarkJSONMarshal-10    	   33679	     34766 ns/op	   32784 B/op	       1 allocs/op
+PASS
+ok  	codeweaver/internal/contract	4.913s
+PASS
+ok  	codeweaver/internal/crashlog	0.250s
+PASS
+ok  	codeweaver/internal/discover	0.248s
+PASS
+ok  	codeweaver/internal/limits	0.226s
+PASS
+ok  	codeweaver/internal/log	0.212s
+PASS
+ok  	codeweaver/internal/parser	0.220s
+goos: darwin
+goarch: arm64
+pkg: codeweaver/internal/parser/python
+cpu: Apple M1 Pro
+BenchmarkParseFilePython1k-10    	      37	  31002369 ns/op	43392263 B/op	   26411 allocs/op
+BenchmarkParseFilePython1k-10    	      39	  31591704 ns/op	43367714 B/op	   26411 allocs/op
+BenchmarkParseFilePython1k-10    	      38	  32454068 ns/op	42897771 B/op	   26409 allocs/op
+PASS
+ok  	codeweaver/internal/parser/python	5.063s
+goos: darwin
+goarch: arm64
+pkg: codeweaver/internal/parser/typescript
+cpu: Apple M1 Pro
+BenchmarkParseFileTypescript1k-10    	      34	  33557675 ns/op	39759712 B/op	   21687 allocs/op
+BenchmarkParseFileTypescript1k-10    	      37	  33410454 ns/op	39719763 B/op	   21686 allocs/op
+BenchmarkParseFileTypescript1k-10    	      36	  33275976 ns/op	39732417 B/op	   21686 allocs/op
+PASS
+ok  	codeweaver/internal/parser/typescript	5.210s

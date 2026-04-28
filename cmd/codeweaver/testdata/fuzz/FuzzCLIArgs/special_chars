@@ -1,0 +1,2 @@
+go test fuzz v1
+string("--workspace=/tmp\x00 with embedded NUL\x07ringbell")

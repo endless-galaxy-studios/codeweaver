@@ -1,0 +1,36 @@
+goos: darwin
+goarch: arm64
+pkg: codeweaver/internal/parser/python
+cpu: Apple M1 Pro
+BenchmarkParseFilePython1k-10    	     148	  36515314 ns/op	43261158 B/op	   26403 allocs/op
+BenchmarkParseFilePython1k-10    	     162	  31200779 ns/op	43455069 B/op	   26404 allocs/op
+BenchmarkParseFilePython1k-10    	     182	  31196298 ns/op	43191837 B/op	   26403 allocs/op
+PASS
+ok  	codeweaver/internal/parser/python	33.244s
+
+goos: darwin
+goarch: arm64
+pkg: codeweaver/internal/parser/typescript
+cpu: Apple M1 Pro
+# generateTypescript1k() produces ~1122 lines.
+# Benchmark name "1k" refers to the ~1000-line target; actual generated source is 1122 lines.
+# Baseline: ~32ms.
+BenchmarkParseFileTypescript1k-10    	     188	  31802509 ns/op	39430395 B/op	   21671 allocs/op
+BenchmarkParseFileTypescript1k-10    	     169	  32146969 ns/op	39846108 B/op	   21672 allocs/op
+BenchmarkParseFileTypescript1k-10    	     189	  33853422 ns/op	39341033 B/op	   21671 allocs/op
+PASS
+ok  	codeweaver/internal/parser/typescript	39.732s
+
+goos: darwin
+goarch: arm64
+pkg: codeweaver/internal/contract
+cpu: Apple M1 Pro
+# Baseline: Apple M1 Pro (2026-04-27).
+# Document: 100 symbols + 50 edges — representative of a medium-sized source file.
+# 1 allocs/op is expected: encoding/json allocates one output buffer per Marshal call.
+# Regression gate (make bench-check): >20% increase in ns/op triggers CI failure.
+BenchmarkJSONMarshal-10    	   33640	     35243 ns/op	   32786 B/op	       1 allocs/op
+BenchmarkJSONMarshal-10    	   33763	     35167 ns/op	   32784 B/op	       1 allocs/op
+BenchmarkJSONMarshal-10    	   34461	     35464 ns/op	   32784 B/op	       1 allocs/op
+PASS
+ok  	codeweaver/internal/contract	4.992s

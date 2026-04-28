@@ -1,0 +1,3 @@
+go test fuzz v1
+[]byte("// just a comment\n/* block comment */\n")
+bool(false)

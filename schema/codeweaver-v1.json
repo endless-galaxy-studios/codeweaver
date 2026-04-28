@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/endless-galaxy-studios/codeweaver/main/schema/codeweaver-v1.json",
+  "$defs": {
+    "Edge": {
+      "properties": {
+        "source_qualified_name": {
+          "type": "string",
+          "description": "QualifiedName of the calling or importing symbol."
+        },
+        "target_qualified_name": {
+          "type": "string",
+          "description": "QualifiedName of the called or imported symbol."
+        },
+        "edge_type": {
+          "type": "string",
+          "description": "Relationship type: calls or imports. The inherits type is not emitted in schema v1."
+        }
+      },
+      "type": "object",
+      "required": [
+        "source_qualified_name",
+        "target_qualified_name",
+        "edge_type"
+      ],
+      "description": "A directed relationship between two symbols."
+    },
+    "ParseError": {
+      "properties": {
+        "file_path": {
+          "type": "string",
+          "description": "Workspace-relative path of the file that failed."
+        },
+        "error_code": {
+          "type": "string",
+          "description": "Stable machine-readable error code. Consumers may branch on this value."
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description. Not stable across binary versions."
+        },
+        "byte_offset": {
+          "type": "integer",
+          "description": "Byte position of the first error node. Absent when not applicable."
+        }
+      },
+      "type": "object",
+      "required": [
+        "file_path",
+        "error_code",
+        "message"
+      ],
+      "description": "A per-file parse failure or warning surfaced in the document rather than as a fatal exit."
+    },
+    "Symbol": {
+      "properties": {
+        "qualified_name": {
+          "type": "string",
+          "description": "Stable unique ID: {workspace_relative_file_path}::{symbol_name}."
+        },
+        "name": {
+          "type": "string",
+          "description": "Short display name without file path prefix."
+        },
+        "file_path": {
+          "type": "string",
+          "description": "Workspace-relative file path with forward-slash separators on all platforms."
+        },
+        "symbol_type": {
+          "type": "string",
+          "description": "Kind of code construct: function, class, or module."
+        },
+        "language": {
+          "type": "string",
+          "description": "Source language: python or typescript."
+        },
+        "line_start": {
+          "type": "integer",
+          "description": "1-based start line. Absent for module symbols."
+        },
+        "line_end": {
+          "type": "integer",
+          "description": "1-based end line (inclusive). Absent for module symbols."
+        }
+      },
+      "type": "object",
+      "required": [
+        "qualified_name",
+        "name",
+        "file_path",
+        "symbol_type",
+        "language"
+      ],
+      "description": "A single code symbol extracted from a source file."
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Output schema version. Always present. Current value: 1.0."
+    },
+    "parser_version": {
+      "type": "string",
+      "description": "Semver of the codeweaver binary that produced this output."
+    },
+    "parsed_at": {
+      "type": "string",
+      "description": "ISO 8601 UTC timestamp of when the parse run started."
+    },
+    "file_count": {
+      "type": "integer",
+      "description": "Number of files for which parse was attempted (total input). Equals files_parsed + files_errored."
+    },
+    "symbols": {
+      "items": {
+        "$ref": "#/$defs/Symbol"
+      },
+      "type": "array",
+      "description": "Array of extracted code symbols, sorted by qualified_name."
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/Edge"
+      },
+      "type": "array",
+      "description": "Array of relationships between symbols, sorted by (source, target, type). The 'inherits' edge_type is not emitted in schema v1."
+    },
+    "deleted_files": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "description": "File paths deleted since last sync. Always [] in binary output; populated by the plugin from its SQLite state."
+    },
+    "parse_errors": {
+      "items": {
+        "$ref": "#/$defs/ParseError"
+      },
+      "type": "array",
+      "description": "Per-file parse failures. Absent when all files parsed without errors."
+    },
+    "dry_run": {
+      "type": "boolean",
+      "description": "Present and true only when --dry-run was passed."
+    },
+    "files_validated": {
+      "type": "integer",
+      "description": "Count of files validated in --dry-run mode."
+    }
+  },
+  "type": "object",
+  "required": [
+    "schema_version",
+    "parser_version",
+    "parsed_at",
+    "file_count",
+    "symbols",
+    "edges",
+    "deleted_files"
+  ],
+  "description": "Top-level JSON document emitted by codeweaver parse. Consumers branch on schema_version for schema evolution."
+}

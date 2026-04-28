@@ -1,0 +1,22 @@
+# Binary artifacts — not committed; built via 'make build'.
+# Patterns are anchored to the module root so cmd/codeweaver/ (the source
+# package) is not accidentally ignored — only the compiled binary at the
+# root of codeweaver-go/ is.
+/codeweaver
+/codeweaver.exe
+/codeweaver.stripped
+
+# IDE files
+.idea/
+
+# Test cache
+*.test
+
+.claude/agent-memory/
+
+.DS_Store
+
+# Build/test outputs
+dist/
+.venv/
+*.test.exe

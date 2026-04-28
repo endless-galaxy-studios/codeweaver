@@ -1,0 +1,3 @@
+go test fuzz v1
+[]byte("function Bad(): JSX.Element { return <div @@@invalid; }\n")
+bool(true)

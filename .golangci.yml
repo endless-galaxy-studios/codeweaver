@@ -1,0 +1,88 @@
+# golangci-lint configuration for codeweaver.
+# Run: golangci-lint run ./...
+#
+# Linter selection rationale:
+#   govet       — Go's built-in vet checks (shadow, printf, etc.)
+#   staticcheck — SA class checks from staticcheck.io (misuse, correctness)
+#   errcheck    — unhandled error returns (critical for a binary with strict exit codes)
+#   gosec       — security-sensitive patterns (file perms, unsafe conversions, etc.)
+#   ineffassign — assignments whose values are never used
+#   revive      — idiomatic Go style enforcer
+#
+# Narrowed stdout invariant:
+#   The rule "no fmt.Print* to os.Stdout outside internal/schema and completion"
+#   is enforced by scripts/check-stdout-invariant.sh (invoked from 'make lint').
+#   forbidigo was evaluated but its pattern matching in v1.64.8 produces too many
+#   false positives — the shell script approach is more precise and readable.
+
+run:
+  timeout: 5m
+  go: "1.26"
+
+linters:
+  disable-all: true
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - gosec
+    - ineffassign
+    - revive
+    - unused
+
+linters-settings:
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment  # struct field alignment optimization — not required for this binary
+
+  errcheck:
+    # Check for unhandled errors in all function calls.
+    check-type-assertions: true
+    check-blank: true
+
+  gosec:
+    excludes:
+      # G304: File path provided as taint input — we intentionally open user-provided paths.
+      - G304
+      # G306: Permissions on file write — we use 0o644 and 0o600 explicitly.
+      - G306
+
+  revive:
+    rules:
+      - name: exported
+      - name: var-naming
+      - name: error-return
+      - name: errorf
+
+  staticcheck:
+    # Enable all SA (staticcheck) checks.
+    checks: ["all"]
+
+issues:
+  # Exclude specific false positives.
+  exclude-rules:
+    # Test files have relaxed stdout rules.
+    - path: "_test.go"
+      linters: [gosec, errcheck]
+
+    # schema-gen is a build tool, not a production binary — relaxed rules.
+    - path: "cmd/schema-gen/"
+      linters: [gosec]
+
+    # Crash log writes: intentionally ignore write error after panic — we're already exiting.
+    - path: "cmd/codeweaver/main.go"
+      linters: [errcheck]
+      text: "os.WriteFile"
+
+    # os.Exit calls after error output: intentional termination pattern.
+    - path: "internal/cli/parse.go"
+      linters: [revive]
+
+    # Unused linter: cli.parse_test.go has placeholder tests.
+    - path: "internal/cli/parse_test.go"
+      linters: [unused]
+
+  # Report all issues.
+  max-issues-per-linter: 0
+  max-same-issues: 0

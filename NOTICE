@@ -1,0 +1,31 @@
+codeweaver
+Copyright 2026 Endless Galaxy Studios LLC
+
+This product includes software developed at
+Endless Galaxy Studios LLC (https://neuroloom.com).
+
+------------------------------------------------------------------------
+
+Upstream NOTICE propagation audit (Apache 2.0 §4(d)):
+
+The following direct dependencies were checked for NOTICE files.
+Apache 2.0 §4(d) requires that if an upstream work ships a NOTICE file,
+any distribution of a derivative work must include a readable copy of
+that NOTICE.
+
+  github.com/spf13/cobra v1.10.2 (Apache 2.0)
+    NOTICE file checked at https://github.com/spf13/cobra/blob/main/NOTICE
+    Result: 404 — no NOTICE file present. No propagation required.
+
+  github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 (Apache 2.0)
+    NOTICE file checked at https://github.com/santhosh-tekuri/jsonschema/blob/master/v6/NOTICE
+    Result: 404 — no NOTICE file present. No propagation required.
+
+  github.com/invopop/jsonschema v0.14.0 (MIT)
+    MIT license — NOTICE file not applicable under MIT terms.
+
+  github.com/odvcencio/gotreesitter v0.15.3 (MIT)
+    MIT license — NOTICE file not applicable under MIT terms.
+
+No upstream NOTICE content requires propagation at this time.
+See THIRD_PARTY_NOTICES for full dependency attribution.
