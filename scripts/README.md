@@ -42,7 +42,7 @@ Utility scripts for local development and CI. All scripts require `bash` and run
 
 **Rule:** The binary makes zero outbound network calls at runtime. Source bytes must never leave the developer's machine via codeweaver. A binary that phones home silently breaks the no-network trust boundary that consumers rely on.
 
-**Layer 3 (Linux CI only, not in this script):** Run the binary under `unshare -n` to execute in a network-isolated namespace. devops-engineer wires this for the `linux/amd64` CI runner:
+**Layer 3 (Linux CI only, not in this script):** Run the binary under `unshare -n` to execute in a network-isolated namespace. Wire this into a `linux/amd64` CI runner:
 
 ```bash
 unshare -n ./codeweaver parse --workspace . testdata/fixtures/python/empty_module.py
